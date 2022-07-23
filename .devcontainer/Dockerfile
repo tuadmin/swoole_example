@@ -9,6 +9,14 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 # Install php-mysql driver
 RUN docker-php-ext-install mysqli pdo pdo_mysql
+# instalamos el SWoole
+#RUN pecl install swoole
+RUN cd /root && pecl download swoole && \
+    tar -zxvf swoole-1* && cd swoole-1* && \
+    phpize && \
+    ./configure --enable-openssl  --enable-http2  --enable-async-redis && \
+    make && make install 
+RUN docker-php-ext-enable swoole
 
 # [Choice] Node.js version: none, lts/*, 16, 14, 12, 10
 ARG NODE_VERSION="none"
