@@ -9,14 +9,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 # Install php-mysql driver
 RUN docker-php-ext-install mysqli pdo pdo_mysql
-# instalamos el SWoole
-#RUN pecl install swoole
-RUN cd /root && pecl download swoole && \
-    tar -zxvf swoole-1* && cd swoole-1* && \
-    phpize && \
-    ./configure --enable-openssl  --enable-http2  --enable-async-redis && \
-    make && make install 
-RUN docker-php-ext-enable swoole
+
 
 # [Choice] Node.js version: none, lts/*, 16, 14, 12, 10
 ARG NODE_VERSION="none"
@@ -25,6 +18,8 @@ RUN if [ "${NODE_VERSION}" != "none" ]; then su vscode -c "umask 0002 && . /usr/
 # [Optional] Uncomment this section to install additional OS packages.
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
+ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
+     && apt-get -y install --no-install-recommends openssl libssl-dev
 
 # [Optional] Uncomment this line to install global node packages.
 # RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
